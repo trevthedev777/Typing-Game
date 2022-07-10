@@ -46,6 +46,18 @@ let score= 0;
 // Init time
 let time = 10;
 
+// Select Difficulty to value in local storage or medium
+let difficulty = 
+    localStorage.getItem("difficulty") !== null 
+    ? localStorage.getItem("difficulty") 
+    : "medium";
+
+// Set difficulty select value
+difficultySelect.value = 
+    localStorage.getItem("difficulty") !== null 
+        ? localStorage.getItem("difficulty") 
+        : "medium";
+
 // Focus on Input on start
 text.focus();
 
@@ -99,6 +111,8 @@ addWordToDom();
 console.log(getRandomWord())
 
 // Event Listeners
+
+// Typing
 text.addEventListener("input", e => {
     const insertedText = e.target.value;
     
@@ -109,8 +123,27 @@ text.addEventListener("input", e => {
         // Clear
         e.target.value = "";
 
-        time += 5; // shorthand for append is +=
+        // time += 5; // shorthand for append is +=
+
+        if (difficulty === "hard") {
+            time += 3;
+        } else if (difficulty === "medium") {
+            time += 5;
+        } else {
+            time += 10;
+        }
 
         updateTime();
     }
+});
+
+// Settings Select
+settingsBtn.addEventListener("click", () => {
+    settings.classList.toggle("hide");
+});
+
+// Settings Select
+settingsForm.addEventListener("change", (e) => {
+    difficulty = e.target.value;
+    localStorage.setItem("difficulty", difficulty);
 });
